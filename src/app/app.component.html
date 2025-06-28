@@ -1,0 +1,93 @@
+<div class="search">
+  <form #form="ngForm" (submit)="onSubmit()">
+    <input type="text" placeholder="Şehir Ara" name="city" [(ngModel)]="city">
+  </form>
+</div>
+
+<div class="container" *ngIf="weatherData">
+  <div class="card">
+    <div class="upperSide">
+      <img src="../assets/snowy.jpg" *ngIf="(weatherData.current_observation.condition.text).indexOf('snow')">
+      <img src="../assets/rainy.jpg" *ngIf="(weatherData.current_observation.condition.text).indexOf('rain')">
+      <img src="../assets/sunny.jpg" *ngIf="weatherData.current_observation.condition.text=='Clear'">
+
+      <div class="weather">
+        <div class="location">{{weatherData.location.city}}</div>
+        <div class="temp">{{weatherData.current_observation.condition.temperature |number: '1.0-0'}}°C</div>
+        <div class="date">{{dayConvert(weatherData.forecasts[0].date)}}</div>
+      </div>
+    </div>
+
+    <div class="lowerSide">
+      <div class="more-label">
+        Daha Fazla
+      </div>
+      <div class="more-div">
+
+        <div class="info-div">
+          <div class="info-label">
+            <img src="../assets/thermoL.png" alt="">
+            <span>Minimum</span>
+          </div>
+          <div class="info-value">
+            {{weatherData.forecasts[0].low}} °C
+          </div>
+        </div>
+
+        <div class="info-div">
+          <div class="info-label">
+            <img src="../assets/thermoH.png" alt="">
+            <span>Maximum</span>
+          </div>
+          <div class="info-value">
+            {{weatherData.forecasts[0].high}} °C
+          </div>
+        </div>
+
+        <div class="info-div">
+          <div class="info-label">
+            <img src="../assets/humidity.png" alt="">
+            <span>Nem</span>
+          </div>
+          <div class="info-value">
+            {{weatherData.current_observation.atmosphere.humidity}}%
+          </div>
+        </div>
+
+        <div class="info-div">
+          <div class="info-label">
+            <img src="../assets/wind.png" alt="">
+            <span>Rüzgar</span>
+          </div>
+          <div class="info-value">
+            {{weatherData.current_observation.wind.speed}} Km/s
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="cards">
+    <div class="card-container">
+      <ng-container *ngFor="let items of weatherData.forecasts, let i=index">
+      <div class="little-card" *ngIf="i>0&&i<7">
+        <div class="shine"  >
+          <div class="little-day">{{dayConvert(items.date)}}</div>
+          <div class="min-max">
+            <div class="min">
+              <img src="../assets/thermoL.png" alt="">
+              <span>Min</span>
+              <span class="termometer t-min">{{items.low}}</span>
+            </div>
+            <div class="max">
+              <img src="../assets/thermoH.png" alt="">
+              <span>Max</span>
+              <span class="termometer t-max">{{items.high}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    </div>
+  </div>
+</div>
